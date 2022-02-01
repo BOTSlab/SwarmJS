@@ -4,10 +4,12 @@
         "browser": true
     },
     "extends": [
-        "airbnb-base",
+        // "airbnb-base",
+        "eslint:recommended",
         "plugin:react/recommended",
         "plugin:@typescript-eslint/recommended"
     ],
+    "ignorePatterns": ["/dist/**/*.js", "/build/*.js"],
     "settings": {
         "import/resolver": {
             "node": {
