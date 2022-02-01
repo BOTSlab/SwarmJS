@@ -6,7 +6,7 @@ module.exports = {
   // mode: 'development',
   context: path.resolve(__dirname, '..'),
   entry: {
-    index: path.resolve(SRC, '', 'index.js')
+    index: path.resolve(SRC, '', 'index.tsx')
   },
   output: {
     path: DIST,
@@ -18,23 +18,39 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader']
       },
+      // {
+      //   test: /\.tsx?$/,
+      //   use: 'ts-loader',
+      //   exclude: /node_modules/,
+      // },
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(ts|tsx|js|jsx)$/,
         resolve: {
-          extensions: ['.js', '.jsx']
+          extensions: ['.ts', '.tsx', '.jsx', '.js']
         },
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-        }
-      }
+        use: ['babel-loader', 'ts-loader'],
+        // use: {
+        //   loader: 'ts-loader',
+        // },
+        exclude: /node_modules/
+      },
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   resolve: {
+      //     extensions: ['.js', '.jsx']
+      //   },
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: 'babel-loader',
+      //     options: {
+      //       presets: ['@babel/preset-env', '@babel/preset-react']
+      //     }
+      //   }
+      // }
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
