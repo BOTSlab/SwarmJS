@@ -25,7 +25,7 @@ const renderables = [
   { module: 'Robot', rendList: RobotRenderables }
 ];
 
-const uniqueRenderingElements = ['All', Array.from(new Set(renderables
+const uniqueRenderingElements = ['All', ...Array.from(new Set(renderables
   .map((renderable) => renderable.rendList.map(
     (def) => getUniqueELementType(renderable.module, def.type)
   ))
