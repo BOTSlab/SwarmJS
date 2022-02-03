@@ -36,16 +36,6 @@ let activeElements = [...uniqueRenderingElements];
 
 const renderedElems = [];
 
-const calculateDatesBetween = (begin, end) => {
-  const dates = [];
-  const date = new Date(begin);
-  while (date <= end) {
-    dates.push(date);
-    date.setDate(date.getDate() + 1);
-  }
-  return dates;
-}
-
 export const getRenderingElements = () => [...uniqueRenderingElements];
 
 export const setElementEnabled = (element, state) => {
