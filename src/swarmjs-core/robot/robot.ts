@@ -48,6 +48,12 @@ export default class Robot {
 
   private actuatorManager: any;
 
+  private updateGoal: any;
+
+  private updateWaypoint: any;
+
+  private updateVelocity: any;
+
   public body: Body
 
   sense: (sensorName: string, params: any) => any;
@@ -106,6 +112,15 @@ export default class Robot {
     this.sensorManager.start();
     this.sensorManager.update();
 
+    // Goal Planning
+    this.updateGoal = getController(this, this.controller.goal);
+
+    // Motion Planning
+    this.updateWaypoint = getController(this, this.controller.waypoint);
+
+    // Velocities calculation
+    this.updateVelocity = getController(this, this.controller.velocity);
+
     // Actuator Manager
     this.actuatorManager = new ActuatorManager(this.scene, this, enabledActuators);
 
@@ -132,16 +147,16 @@ export default class Robot {
     this.sensorManager.update();
 
     // Update goal
-    const newGoalRaw = getController(this, this.controller.goal)(this.goal, this.sensors, this.actuatorManager.actuators);
+    const newGoalRaw = this.updateGoal(this.goal, this.sensors, this.actuatorManager.actuators);
     const newGoal = this.limitGoal(newGoalRaw);
     this.goal = newGoal;
 
     // Update waypoint, according to new goal
-    const newWaypoint = getController(this, this.controller.waypoint)(this.goal, this.sensors, this.actuatorManager.actuators);
+    const newWaypoint = this.updateWaypoint(this.goal, this.sensors, this.actuatorManager.actuators);
     this.setWaypoint(newWaypoint);
 
     // Update velocities, according to new waypoint
-    const velocities = getController(this, this.controller.velocity)(newWaypoint, this.sensors, this.actuatorManager.actuators);
+    const velocities = this.updateVelocity(newWaypoint, this.sensors, this.actuatorManager.actuators);
     this.setVelocities(velocities);
 
     let actuate;
