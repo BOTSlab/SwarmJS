@@ -197,8 +197,8 @@ export default class Robot {
   limitGoal(goal) {
     if (
       !this.sensors.position
-      || !Number.isNaN(this.sensors.position.x)
-      || !Number.isNaN(this.sensors.position.y)
+      || Number.isNaN(this.sensors.position.x)
+      || Number.isNaN(this.sensors.position.y)
     ) {
       return goal;
     }
