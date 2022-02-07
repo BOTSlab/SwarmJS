@@ -18,35 +18,14 @@ module.exports = {
         test: /\.css$/i,
         use: ['style-loader', 'css-loader']
       },
-      // {
-      //   test: /\.tsx?$/,
-      //   use: 'ts-loader',
-      //   exclude: /node_modules/,
-      // },
       {
         test: /\.(ts|tsx|js|jsx)$/,
         resolve: {
           extensions: ['.ts', '.tsx', '.jsx', '.js']
         },
         use: ['babel-loader', 'ts-loader'],
-        // use: {
-        //   loader: 'ts-loader',
-        // },
         exclude: /node_modules/
       },
-      // {
-      //   test: /\.(js|jsx)$/,
-      //   resolve: {
-      //     extensions: ['.js', '.jsx']
-      //   },
-      //   exclude: /node_modules/,
-      //   use: {
-      //     loader: 'babel-loader',
-      //     options: {
-      //       presets: ['@babel/preset-env', '@babel/preset-react']
-      //     }
-      //   }
-      // }
     ]
   },
   resolve: {
