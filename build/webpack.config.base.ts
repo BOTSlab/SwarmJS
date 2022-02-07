@@ -1,9 +1,9 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
-const { SRC, DIST } = require('./paths');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { Configuration } from 'webpack';
+import path from 'path';
+import { SRC, DIST } from './paths';
 
-module.exports = {
-  // mode: 'development',
+const baseConfig: Configuration  = {
   context: path.resolve(__dirname, '..'),
   entry: {
     index: path.resolve(SRC, '', 'index.tsx')
@@ -25,7 +25,7 @@ module.exports = {
         },
         use: ['babel-loader', 'ts-loader'],
         exclude: /node_modules/
-      },
+      }
     ]
   },
   resolve: {
@@ -37,3 +37,5 @@ module.exports = {
     })
   ]
 };
+
+export default baseConfig
