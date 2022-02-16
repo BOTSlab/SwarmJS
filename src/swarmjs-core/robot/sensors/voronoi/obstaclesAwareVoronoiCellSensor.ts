@@ -8,7 +8,7 @@
 
 import * as splitPolygon from 'split-polygon'
 
-import Sensor from '../sensor';
+import { AbstractSensor } from '../sensor';
 import { AvailableSensors, sensorSamplingTypes } from '../sensorManager';
 import {
   shiftPointOfLineSegInDirOfPerpendicularBisector,
@@ -16,6 +16,9 @@ import {
   pointIsInsidePolygon,
   closePolygon
 } from '../../../utils/geometry';
+import { dependencies } from 'webpack';
+import Robot from '../../robot';
+import Scene from '../../../scene';
 
 const name = 'obstaclesAwareVoronoiCell';
 
@@ -50,18 +53,16 @@ const trimVCwithStaticObstacles = (pos, VC, closestPoint) => {
   return splitPolygonParts[1];
 };
 
-class ObstaclesAwareVoronoiCellSensor extends Sensor {
-  dependencies: any[];
-  value: any[];
-  scene: any;
-  robot: any;
+class ObstaclesAwareVoronoiCellSensor extends AbstractSensor<number[][]> {
+  scene: Scene;
+  robot: Robot;
+
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [
+    const dependencies = [
       AvailableSensors.position,
       AvailableSensors.closestObstaclePoint
     ];
-    this.value = [];
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, [] );
   }
 
   sample() {

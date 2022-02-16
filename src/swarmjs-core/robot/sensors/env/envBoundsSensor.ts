@@ -1,9 +1,9 @@
-import Sensor from '../sensor';
+import { AbstractSensor } from '../sensor';
 import { sensorSamplingTypes } from '../sensorManager';
 
 const name = 'envBounds';
 
-class EnvironmentBoundsSensor extends Sensor {
+class EnvironmentBoundsSensor extends AbstractSensor<{x: number, y: number}[]> {
   constructor(robot, scene) {
     super(robot, scene, name, sensorSamplingTypes.onStart);
     this.value = [];

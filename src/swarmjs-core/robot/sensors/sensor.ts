@@ -1,25 +1,37 @@
 import Scene from "../../scene";
 import Robot from "../robot";
 
-export default class Sensor {
-  robot: Robot;
-  scene: Scene;
+
+export interface Sensor<T> {
+  sample(): void;
+  read(): T;
+}
+
+export abstract class AbstractSensor<T> implements Sensor<T> {
+  protected robot: Robot;
+  protected scene: Scene;
   name: string;
-  type: any;
-  dependencies: any[];
-  value: any;
-  constructor(robot, scene, name, samplingType) {
+  private type: any;
+  private dependencies: Sensor<any>[];
+  protected value: T;  
+  
+  protected constructor(robot, scene, name, samplingType, dependencies = [], initialValue: T = undefined) {
     this.robot = robot;
     this.scene = scene;
     this.name = name;
     this.type = samplingType;
-    this.dependencies = [];
-    this.value = null;
+    this.dependencies = dependencies;
+    this.value = initialValue;
+
+    // dependencies.forEach(dependency => {
+    //   if(!this.robot.sensors[dependency]) {
+    //     throw new Error(`Dependency ${dependency} is not registered for sensor ${name}`);
+    //   }
+    // });
   }
 
-  sample() {
-    // Should be overridden by each sensor
-    this.value = null;
+  sample(): void {
+    // Must be overridden
   }
 
   read() {

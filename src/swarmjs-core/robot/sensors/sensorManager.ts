@@ -17,8 +17,8 @@ import ObstaclesAwareVoronoiCellSensor from './voronoi/obstaclesAwareVoronoiCell
 import BufferedVoronoiCellSensor from './voronoi/bufferedVoronoiCellSensor';
 import ReachedGoalSensor from './state/reachedGoalSensor';
 import ReachedWaypointSensor from './state/reachedWaypointSensor';
-import PucksNearGrapperSensor from './clustering/pucksNearGrapperSensor';
-import ClosestPuckToGrapperSensor from './clustering/closestPuckToGrapperSensor';
+import PucksNearGrabberSensor from './clustering/pucksNearGrabberSensor';
+import ClosestPuckToGrabberSensor from './clustering/closestPuckToGrabberSensor';
 import WallSensor from './env/wallSensor';
 import PuckGoalAreaSensor from './state/puckGoalAreaSensor';
 
@@ -48,8 +48,8 @@ const availableSensorDefitions = [
   BufferedVoronoiCellSensor,
   ReachedGoalSensor,
   ReachedWaypointSensor,
-  PucksNearGrapperSensor,
-  ClosestPuckToGrapperSensor
+  PucksNearGrabberSensor,
+  ClosestPuckToGrabberSensor
 ];
 
 // Sensors are stored in this object allowing other modules to easily reference them

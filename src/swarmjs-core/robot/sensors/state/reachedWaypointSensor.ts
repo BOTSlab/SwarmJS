@@ -1,13 +1,12 @@
-import Sensor from '../sensor';
+import { AbstractSensor } from '../sensor';
 import { AvailableSensors, sensorSamplingTypes } from '../sensorManager';
 
 const name = 'reachedWaypoint';
 
-class ReachedWaypointSensor extends Sensor {
+class ReachedWaypointSensor extends AbstractSensor<boolean> {
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [AvailableSensors.position];
-    this.value = false;
+    const dependencies = [AvailableSensors.position]
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, false);
   }
 
   sample() {

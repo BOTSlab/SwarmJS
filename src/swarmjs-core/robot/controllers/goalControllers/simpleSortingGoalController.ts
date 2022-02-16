@@ -13,7 +13,7 @@ export default function simpleSortingGoalController(robot, params) {
 
   return (oldGoal, sensors, actuators) => {
     const curGoalArea = sensors.puckGoalAreaSensor;
-    const grappedPuck = actuators.grapper.getState();
+    const grappedPuck = actuators.grabber.getState();
 
     if (curGoalArea && grappedPuck && curGoalArea === grappedPuck.color) {
       curGoalHoldTime = 0;

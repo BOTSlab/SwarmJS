@@ -15,17 +15,17 @@
   and all sensors should be added to the 'availableSensorDefitions' list in sensorManager
 */
 
-import Sensor from '../sensor';
+import { Vector } from 'matter-js';
+import { AbstractSensor } from '../sensor';
 import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
 
 const name = 'position';
 
 // Class based sensor implementation
-class PositionSensor extends Sensor {
+class PositionSensor extends AbstractSensor<Vector> {
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [AvailableSensors.prevPosition];
-    this.value = { x: null, y: null };
+    const dependencies = [];
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, {x: null, y: null});
   }
 
   sample() {

@@ -1,4 +1,4 @@
-import Sensor from '../sensor';
+import { AbstractSensor } from '../sensor';
 import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
 import { distanceBetweenPointAndLine } from '../../../utils/geometry';
 
@@ -13,15 +13,14 @@ type Options = {
   detectionRadius?: number;
 };
 
-class WallSensor extends Sensor {
+class WallSensor extends AbstractSensor<any[]> {
   DETECTION_RADIUS: number;
   constructor(robot, scene, options:Options = {}) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [
+    const dependencies = [
       AvailableSensors.position,
       AvailableSensors.directions
     ];
-    this.value = [];
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, []);
 
     this.DETECTION_RADIUS = options.detectionRadius == null ? robot.radius : options.detectionRadius;
   }

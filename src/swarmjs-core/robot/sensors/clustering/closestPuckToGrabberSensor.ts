@@ -1,21 +1,21 @@
-import Sensor from '../sensor';
+import { AbstractSensor} from '../sensor';
 import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
 import { getDistance } from '../../../utils/geometry';
+import Puck from '../../../puck';
 
-const name = 'closestPuckToGrapper';
+const name = 'closestPuckToGrabber';
 
-class ClosestPuckToGrapper extends Sensor {
-  constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [
+class ClosestPuckToGrabber extends AbstractSensor<Puck> {
+  constructor(robot, scene, initialValue = undefined) {
+    const dependencies = [
       AvailableSensors.heading,
-      AvailableSensors.pucksNearGrapper
+      AvailableSensors.pucksNearGrabber
     ];
-    this.value = [];
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, initialValue);
   }
 
   sample() {
-    const pucks = this.robot.sensors.pucksNearGrapper;
+    const pucks = this.robot.sensors.pucksNearGrabber;
 
     this.value = pucks?.reduce((acc, p) => {
       if (acc === null) {
@@ -31,5 +31,5 @@ class ClosestPuckToGrapper extends Sensor {
 
 export default {
   name,
-  Sensor: ClosestPuckToGrapper
+  Sensor: ClosestPuckToGrabber
 };

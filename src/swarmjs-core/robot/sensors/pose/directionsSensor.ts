@@ -1,7 +1,7 @@
 // This sensor calculates the points on all directions relative to the robot.
 // Usefull for controllers to easily set a heading direction depending on sensor readings.
 
-import Sensor from '../sensor';
+import { AbstractSensor } from '../sensor';
 import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
 import { getAbsolutePointFromLengthAndAngle } from '../../../utils/geometry';
 
@@ -17,17 +17,33 @@ const directionsDefinitions = {
   forwardLeft: -Math.PI / 4
 };
 
-class DirectionsSensor extends Sensor {
+type coordinate = { x: number, y: number };
+
+type directionType = {
+  forward: coordinate,
+  forwardRight: coordinate,
+  right: coordinate,
+  backwardRight: coordinate,
+  backward: coordinate,
+  backwardLeft: coordinate,
+  left: coordinate,
+  forwardLeft: coordinate
+}
+
+const defaultValue = () => {
+  return Object.keys(directionsDefinitions).reduce((acc, direction) => {
+    acc[direction] = { x: null, y: null };
+    return acc;
+  }, {});
+}
+
+class DirectionsSensor extends AbstractSensor<directionType | Record<string, unknown>> {
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [
+    const dependencies = [
       AvailableSensors.position,
       AvailableSensors.orientation
     ];
-    this.value = Object.keys(directionsDefinitions).reduce((acc, direction) => {
-      acc[direction] = { x: null, y: null };
-      return acc;
-    }, {});
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, defaultValue());
   }
 
   sample() {
