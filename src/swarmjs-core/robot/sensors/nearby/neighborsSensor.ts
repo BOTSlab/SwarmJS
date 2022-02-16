@@ -1,11 +1,12 @@
 import Scene from '../../../scene';
-import Sensor from '../sensor';
+import { AbstractSensor } from '../sensor';
 import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import Robot from '../../robot';
 
 const name = 'neighbors';
 
-const getNeighbors = (scene: Scene, robotId) => {
-  const neighbors = [];
+const getNeighbors = (scene: Scene, robotId): Robot[] => {
+  const neighbors: Robot[] = [];
   try {
     if (scene.voronoi?.delaunay) {
       Array.from(scene.voronoi?.delaunay.neighbors(robotId))
@@ -20,11 +21,9 @@ const getNeighbors = (scene: Scene, robotId) => {
   return neighbors;
 };
 
-class NeighborsSensor extends Sensor {
+class NeighborsSensor extends AbstractSensor<Robot[]> {
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [AvailableSensors.position];
-    this.value = [];
+    super(robot, scene, name, sensorSamplingTypes.onUpdate,[AvailableSensors.position] , []);
   }
 
   sample() {

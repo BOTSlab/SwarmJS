@@ -1,12 +1,12 @@
-import Sensor from '../sensor';
-import { sensorSamplingTypes } from '../sensorManager';
+import { Vector } from 'matter-js';
+import { AbstractSensor } from '../sensor';
+import { AvailableSensors, sensorSamplingTypes } from '../sensorManager';
 
 const name = 'prevPosition';
 
-class PrevPositionSensor extends Sensor {
+class PrevPositionSensor extends AbstractSensor<Vector> {
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.value = { x: null, y: null };
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, [AvailableSensors.position], {x: null, y: null});
   }
 
   sample() {

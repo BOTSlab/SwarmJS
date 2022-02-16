@@ -3,17 +3,17 @@
 export default function simpleSortingActuatorController(robot, params) {
   return (sensors, actuators) => {
     const curGoalArea = sensors.puckGoalAreaSensor;
-    const closestPuck = sensors.closestPuckToGrapper;
-    const grappedPuck = actuators.grapper.getState();
+    const closestPuck = sensors.closestPuckToGrabber;
+    const grappedPuck = actuators.grabber.getState();
 
     if (curGoalArea) {
       if (grappedPuck && curGoalArea === grappedPuck.color) {
-        actuators.grapper.deactivate();
+        actuators.grabber.deactivate();
       }
     }
 
     if (!grappedPuck && closestPuck && curGoalArea !== closestPuck.color) {
-      actuators.grapper.activate();
+      actuators.grabber.activate();
     }
   };
 }

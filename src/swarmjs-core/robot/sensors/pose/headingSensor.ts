@@ -1,17 +1,17 @@
-import Sensor from '../sensor';
+import { AbstractSensor } from '../sensor';
 import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
 import { getAbsolutePointFromLengthAndAngle } from '../../../utils/geometry';
+import { Vector } from 'matter-js';
 
 const name = 'heading';
 
-class HeadingSensor extends Sensor {
+class HeadingSensor extends AbstractSensor<Vector> {
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate);
-    this.dependencies = [
+    const dependencies = [
       AvailableSensors.position,
       AvailableSensors.orientation
     ];
-    this.value = { x: null, y: null };
+    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, {x: null, y: null});
   }
 
   sample() {

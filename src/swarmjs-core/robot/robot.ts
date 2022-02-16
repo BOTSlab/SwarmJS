@@ -630,7 +630,7 @@ const sensorsRenderables = [
     },
     dynamicAttrs: {
       stroke: {
-        prop: 'sensors.closestPuckToGrapper',
+        prop: 'sensors.closestPuckToGrabber',
         modifier: (val) => (val ? 'green' : 'red')
       },
       cx: { prop: 'sensors.directions.forward.x' },
