@@ -1,6 +1,6 @@
 import Scene from '../../../scene';
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import Robot from '../../robot';
 
 const name = 'neighbors';
@@ -23,7 +23,7 @@ const getNeighbors = (scene: Scene, robotId): Robot[] => {
 
 class NeighborsSensor extends AbstractSensor<Robot[]> {
   constructor(robot, scene) {
-    super(robot, scene, name, sensorSamplingTypes.onUpdate,[AvailableSensors.position] , []);
+    super(robot, scene, name, SensorSamplingType.onUpdate,[AvailableSensors.position] , []);
   }
 
   sample() {

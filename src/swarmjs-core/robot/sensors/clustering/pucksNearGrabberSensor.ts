@@ -1,5 +1,5 @@
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import { getDistance } from '../../../utils/geometry';
 import Puck from '../../../puck';
 
@@ -13,7 +13,7 @@ class PucksNearGrabberSensor extends AbstractSensor<Puck[]> {
       AvailableSensors.heading,
       AvailableSensors.nearbyPucks
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, []);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, []);
 
     this.MAX_NEARBY_DISTANCE = robot.radius * 4;
   }

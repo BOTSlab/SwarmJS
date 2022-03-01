@@ -9,7 +9,7 @@
 import * as splitPolygon from 'split-polygon'
 
 import { AbstractSensor } from '../sensor';
-import { AvailableSensors, sensorSamplingTypes } from '../sensorManager';
+import { AvailableSensors, SensorSamplingType } from '../sensorManager';
 import {
   shiftPointOfLineSegInDirOfPerpendicularBisector,
   getLineEquationParams,
@@ -19,10 +19,13 @@ import {
 import { dependencies } from 'webpack';
 import Robot from '../../robot';
 import Scene from '../../../scene';
+import VoronoiSensor, { VoronoiCellSensor } from './VoronoiSensor';
+import { Delaunay, Voronoi } from 'd3-delaunay';
+import { GlobalVoronoiSensor } from './GlobalVoronoiSensor';
 
 const name = 'obstaclesAwareVoronoiCell';
 
-const trimVCwithStaticObstacles = (pos, VC, closestPoint) => {
+const trimVCwithStaticObstacles = (pos, VC: Delaunay.Polygon, closestPoint) => {
   if (closestPoint == null) {
     return VC;
   }
@@ -53,20 +56,23 @@ const trimVCwithStaticObstacles = (pos, VC, closestPoint) => {
   return splitPolygonParts[1];
 };
 
-class ObstaclesAwareVoronoiCellSensor extends AbstractSensor<number[][]> {
+class ObstaclesAwareVoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
   scene: Scene;
   robot: Robot;
 
   constructor(robot, scene) {
     const dependencies = [
       AvailableSensors.position,
-      AvailableSensors.closestObstaclePoint
+      AvailableSensors.closestObstaclePoint,
+      AvailableSensors[VoronoiSensor.name]
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, [] );
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, [] );
   }
 
   sample() {
-    const originalVC = this.scene?.voronoi?.cellPolygon(this.robot.id);
+    // const originalVC = (this.robot?.sensors?.get(VoronoiSensor.name) as VoronoiCellSensor).read();
+    const sensorValues = this.robot?.sensors
+    const originalVC = sensorValues[VoronoiSensor.name]
 
     if (originalVC == null) {
       this.value = [];

@@ -1,5 +1,5 @@
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import { Vector } from 'matter-js';
 
 const name = 'closestObstaclePoint';
@@ -10,7 +10,7 @@ class ClosestObstaclePointSensor extends AbstractSensor<Vector> {
       AvailableSensors.position,
       AvailableSensors.nearbyObstacles
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, undefined);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, undefined);
   }
 
   sample() {

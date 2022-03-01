@@ -1,5 +1,5 @@
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import { getAbsolutePointFromLengthAndAngle } from '../../../utils/geometry';
 import { Vector } from 'matter-js';
 
@@ -11,7 +11,7 @@ class HeadingSensor extends AbstractSensor<Vector> {
       AvailableSensors.position,
       AvailableSensors.orientation
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, {x: null, y: null});
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, {x: null, y: null});
   }
 
   sample() {

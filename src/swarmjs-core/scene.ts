@@ -8,6 +8,7 @@ import Puck from './puck';
 import generateStaticObject from './staticObjects/staticObjectFactory';
 import { mapSceneToArr, getPucksGoalMap } from './distanceTransform/globalPlanning';
 import { getEnvBoundaryObjects } from './utils/matter';
+import { GlobalVoronoiSensor } from './robot/sensors/voronoi/GlobalVoronoiSensor';
 
 export default class Scene {
   numOfRobots: number;
@@ -35,6 +36,7 @@ export default class Scene {
   pause: () => void;
   unpause: () => void;
   setSpeed: (scale: any) => void;
+  voronoiSensor: GlobalVoronoiSensor;
   constructor(
     envConfig,
     robotsConfig,
@@ -136,9 +138,11 @@ export default class Scene {
     );
 
     // Initialize Voronoi Diagram
-    this.voronoi = !this.useVoronoi ? null : Delaunay
-      .from(this.getCurRobotsPos(), (d) => d.x, (d) => d.y)
-      .voronoi([0, 0, this.width, this.height]);
+    // Use the same voronoi diagram calculated for the robots voronoi sensor
+    this.voronoiSensor = GlobalVoronoiSensor.getInstance(this);
+    this.voronoiSensor.sample(0);
+
+    this.voronoi = this.voronoiSensor.read().values().next().value;
 
     // Simulation Speed
     this.timeDelta = 16.666;
@@ -176,9 +180,12 @@ export default class Scene {
     Engine.update(this.engine, this.timeDelta);
 
     if (this.useVoronoi) {
-      this.voronoi = Delaunay
-        .from(this.getCurRobotsPos(), (d) => d.x, (d) => d.y)
-        .voronoi([0, 0, this.width, this.height]);
+      // this.voronoi = Delaunay
+      //   .from(this.getCurRobotsPos(), (d) => d.x, (d) => d.y)
+      //   .voronoi([0, 0, this.width, this.height]);
+
+      this.voronoiSensor.sample(this.timeInstance);
+      this.voronoi = this.voronoiSensor.read().values().next().value;
     }
 
     this.robots.forEach((r) => r.timeStep());
@@ -202,7 +209,7 @@ export default class Scene {
   }
 
   initializeRobotsRange(
-    numOfRobots, radius, controllers, sensors, actuators, envWidth, envHeight, algorithm
+    numOfRobots: number, radius: number, controllers, sensors, actuators, envWidth, envHeight, algorithm
   ) {
     return d3.range(numOfRobots)
       .map((i) => new Robot(i,

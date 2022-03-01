@@ -13,7 +13,7 @@ const simConfig = {
     speed: 15
   },
   robots: {
-    count: 20,
+    count: 10,
     radius: 7,
     controllers: {
       goal: {

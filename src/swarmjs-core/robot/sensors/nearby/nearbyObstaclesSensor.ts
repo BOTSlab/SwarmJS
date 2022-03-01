@@ -1,5 +1,5 @@
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import generateStaticObject from '../../../staticObjects/staticObjectFactory';
 
 const name = 'nearbyObstacles';
@@ -23,7 +23,7 @@ class NearbyObstaclesSensor extends AbstractSensor<any[]> {
       AvailableSensors.position,
       AvailableSensors.nearbyPucks
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, []);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, []);
     
     this.DETECTION_RADIUS = options.detectionRadius == null ? robot.radius * 10 : options.detectionRadius;
   }
