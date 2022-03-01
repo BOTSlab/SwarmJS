@@ -1,6 +1,6 @@
 import { AbstractSensor } from '../sensor';
 import Puck from '../../../puck';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 
 const name = 'nearbyPucks';
 
@@ -8,7 +8,7 @@ class NearbyPucksSensor extends AbstractSensor<Puck[]> {
   private MAX_NEARBY_DISTANCE: number;
   constructor(robot, scene) {
     const dependencies = [AvailableSensors.position];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, []);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, []);
 
 
     this.MAX_NEARBY_DISTANCE = robot.radius * 20;

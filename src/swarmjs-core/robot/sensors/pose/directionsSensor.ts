@@ -2,7 +2,7 @@
 // Usefull for controllers to easily set a heading direction depending on sensor readings.
 
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import { getAbsolutePointFromLengthAndAngle } from '../../../utils/geometry';
 
 const name = 'directions';
@@ -43,7 +43,7 @@ class DirectionsSensor extends AbstractSensor<directionType | Record<string, unk
       AvailableSensors.position,
       AvailableSensors.orientation
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, defaultValue());
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, defaultValue());
   }
 
   sample() {

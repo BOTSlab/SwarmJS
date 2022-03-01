@@ -4,6 +4,7 @@ import { getDistance } from '../utils/geometry';
 
 import SensorManager from './sensors/sensorManager';
 import ActuatorManager from './actuators/actuatorsManager';
+import Scene from '../scene';
 
 const getController = (robot, controllerDef) => {
   let Func = null;
@@ -44,7 +45,7 @@ export default class Robot {
 
   public waypoint: Vector;
 
-  private sensorManager: any;
+  private sensorManager: SensorManager;
 
   private actuatorManager: any;
 
@@ -68,7 +69,7 @@ export default class Robot {
     public radius: number,
     private envWidth,
     private envHeight,
-    private scene: any
+    private scene: Scene
   ) {
     this.velocity = { x: 0, y: 0 };
     this.velocityScale = 1;
@@ -110,7 +111,6 @@ export default class Robot {
     // Sensor Manager
     this.sensorManager = new SensorManager(this.scene, this, enabledSensors);
     this.sensorManager.start();
-    this.sensorManager.update();
 
     // Goal Planning
     this.updateGoal = getController(this, this.controller.goal);
@@ -124,7 +124,8 @@ export default class Robot {
     // Actuator Manager
     this.actuatorManager = new ActuatorManager(this.scene, this, enabledActuators);
 
-    this.sense = (sensorName, params) => this.sensorManager.sense(sensorName, params);
+
+    this.sense = (sensorName) => this.sensorManager.sense(sensorName);
 
     this.sense.bind(this);
   }
@@ -135,7 +136,7 @@ export default class Robot {
 
   set position(val) {
     Body.set(this.body, 'position', { x: val.x, y: val.y });
-    this.sensorManager.update();
+    this.sensorManager.update(this.scene.timeInstance);
   }
 
   setWaypoint(waypoint) {
@@ -144,7 +145,7 @@ export default class Robot {
 
   timeStep() {
     // Update sensors
-    this.sensorManager.update();
+    this.sensorManager.update(this.scene.timeInstance);
 
     // Update goal
     const newGoalRaw = this.updateGoal(this.goal, this.sensors, this.actuatorManager.actuators);

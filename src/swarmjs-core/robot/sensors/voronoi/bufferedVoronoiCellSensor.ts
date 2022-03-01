@@ -1,7 +1,10 @@
+import { Delaunay } from 'd3-delaunay';
 import * as Offset from 'polygon-offset';
+import Scene from '../../../scene';
+import Robot from '../../robot';
 
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 
 const name = 'BVC';
 
@@ -21,14 +24,14 @@ const calculateBVCfromVC = (cell, position, radius) => {
   return padding;
 };
 
-class BufferedVoronoiCellSensor extends AbstractSensor<number[][]> {
-  constructor(robot, scene) {
+class BufferedVoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
+  constructor(robot: Robot, scene: Scene) {
 
     const dependencies = [
       AvailableSensors.position,
       AvailableSensors.obstaclesAwareVoronoiCell
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies);
   }
 
   sample() {

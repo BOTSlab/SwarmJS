@@ -25,11 +25,14 @@ import PuckGoalAreaSensor from './state/puckGoalAreaSensor';
 import * as toposort from 'toposort'
 import Robot from '../robot';
 import Scene from '../../scene'
+import VoronoiSensor from './voronoi/VoronoiSensor';
+import { Sensor } from './sensor';
 
-export const sensorSamplingTypes = {
-  onStart: 'onStart',
-  onUpdate: 'onUpdate'
-};
+export const enum SensorSamplingType {
+  onStart = 'onStart', // Only one sample is taken at the start of the simulation
+  onUpdate = 'onUpdate', // Samples are taken every frame
+  onDemand = 'onDemand' // Samples are taken when requested
+}
 
 const availableSensorDefitions = [
   EnvironmentBoundsSensor,
@@ -49,8 +52,10 @@ const availableSensorDefitions = [
   ReachedGoalSensor,
   ReachedWaypointSensor,
   PucksNearGrabberSensor,
-  ClosestPuckToGrabberSensor
+  ClosestPuckToGrabberSensor,
+  VoronoiSensor
 ];
+
 
 // Sensors are stored in this object allowing other modules to easily reference them
 // e.g. in config when defining the enabled sensors, or in other sensors to define a dependency
@@ -59,7 +64,7 @@ export const AvailableSensors: any = availableSensorDefitions.reduce((acc, senso
   return acc;
 }, {});
 
-const orderSensors = (sensorList) => {
+const orderSensors = (sensorList: Sensor<unknown>[]) => {
   const edges = [];
   sensorList.forEach((sensor) => {
     if (sensor.dependencies && sensor.dependencies.length > 0) {
@@ -79,7 +84,7 @@ const orderSensors = (sensorList) => {
 export default class SensorManager {
   scene: Scene;
   robot: Robot;
-  activeSensors: any[];
+  activeSensors: Sensor<unknown>[];
   sensorsOnStart: any;
   sensorsOnUpdate: any;
   values: any;
@@ -91,9 +96,9 @@ export default class SensorManager {
       enabledSensors.map(({ Sensor }) => new Sensor(robot, scene))
     );
     this.sensorsOnStart = this.activeSensors
-      .filter((s) => s.type === sensorSamplingTypes.onStart);
+      .filter((s) => s.type === SensorSamplingType.onStart);
     this.sensorsOnUpdate = this.activeSensors
-      .filter((s) => s.type === sensorSamplingTypes.onUpdate);
+      .filter((s) => s.type === SensorSamplingType.onUpdate);
 
     this.values = this.activeSensors.reduce((acc, sensor) => {
       acc[sensor.name] = sensor.read();
@@ -118,10 +123,10 @@ export default class SensorManager {
     return sensor.read();
   }
 
-  sample(name, params?) {
+  sample(name, tick, force = false) {
     const sensor = this.activeSensors.find((s) => s.name === name);
     if (sensor) {
-      sensor.sample(params);
+      sensor.sample(tick, force);
     }
     this.values = {
       ...this.values,
@@ -129,17 +134,17 @@ export default class SensorManager {
     };
   }
 
-  sampleSensors(sensorsList) {
+  sampleSensors(sensorsList, tick: number, force = false) {
     sensorsList.forEach((sensor) => {
-      this.sample(sensor.name);
+      this.sample(sensor.name, tick, force);
     });
   }
 
-  update() {
-    this.sampleSensors(this.sensorsOnUpdate);
+  update(tick?: number, force = false) {
+    this.sampleSensors(this.sensorsOnUpdate, tick, force);
   }
 
   start() {
-    this.sampleSensors(this.sensorsOnStart);
+    this.sampleSensors(this.sensorsOnStart, 0);
   }
 }

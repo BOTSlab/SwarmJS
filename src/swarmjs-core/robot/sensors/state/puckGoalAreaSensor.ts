@@ -1,12 +1,12 @@
 import { AbstractSensor } from '../sensor';
-import { AvailableSensors, sensorSamplingTypes } from '../sensorManager';
+import { AvailableSensors, SensorSamplingType } from '../sensorManager';
 
 const name = 'puckGoalAreaSensor';
 
 class PuckGoalAreaSensor extends AbstractSensor<boolean> {
   constructor(robot, scene) {
     const dependencies = [AvailableSensors.position];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, false);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, false);
   }
 
   sample() {

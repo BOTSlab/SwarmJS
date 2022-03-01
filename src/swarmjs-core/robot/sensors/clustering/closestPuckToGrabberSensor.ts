@@ -1,5 +1,5 @@
 import { AbstractSensor} from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import { getDistance } from '../../../utils/geometry';
 import Puck from '../../../puck';
 
@@ -11,7 +11,7 @@ class ClosestPuckToGrabber extends AbstractSensor<Puck> {
       AvailableSensors.heading,
       AvailableSensors.pucksNearGrabber
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, initialValue);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, initialValue);
   }
 
   sample() {

@@ -1,5 +1,5 @@
 import { AbstractSensor } from '../sensor';
-import { sensorSamplingTypes, AvailableSensors } from '../sensorManager';
+import { SensorSamplingType, AvailableSensors } from '../sensorManager';
 import { distanceBetweenPointAndLine } from '../../../utils/geometry';
 
 const name = 'walls';
@@ -20,7 +20,7 @@ class WallSensor extends AbstractSensor<any[]> {
       AvailableSensors.position,
       AvailableSensors.directions
     ];
-    super(robot, scene, name, sensorSamplingTypes.onUpdate, dependencies, []);
+    super(robot, scene, name, SensorSamplingType.onUpdate, dependencies, []);
 
     this.DETECTION_RADIUS = options.detectionRadius == null ? robot.radius : options.detectionRadius;
   }
