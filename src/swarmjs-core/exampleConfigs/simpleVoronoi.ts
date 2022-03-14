@@ -66,7 +66,7 @@ const simConfig: simConfig2 = {
     groups: [
       {
         id: 0,
-        count: 20,
+        count: 10,
         radius: 10,
         goal: { x: 400, y: 350 },
         goalRadius: 7 * 12,
@@ -74,28 +74,28 @@ const simConfig: simConfig2 = {
       },
       {
         id: 1,
-        count: 20,
+        count: 10,
         radius: 10,
         goal: { x: 650, y: 375 },
         goalRadius: 7 * 12,
         color: 'blue'
-      },
-      {
-        id: 2,
-        count: 20,
-        radius: 10,
-        goal: { x: 200, y: 150 },
-        goalRadius: 7 * 12,
-        color: 'green'
-      },
-      {
-        id: 3,
-        count: 20,
-        radius: 10,
-        goal: { x: 600, y: 600 },
-        goalRadius: 7 * 12,
-        color: 'orange'
       }
+      // {
+      //   id: 2,
+      //   count: 20,
+      //   radius: 10,
+      //   goal: { x: 200, y: 150 },
+      //   goalRadius: 7 * 12,
+      //   color: 'green'
+      // },
+      // {
+      //   id: 3,
+      //   count: 20,
+      //   radius: 10,
+      //   goal: { x: 600, y: 600 },
+      //   goalRadius: 7 * 12,
+      //   color: 'orange'
+      // }
     ],
     useGlobalPuckMaps: false
   },

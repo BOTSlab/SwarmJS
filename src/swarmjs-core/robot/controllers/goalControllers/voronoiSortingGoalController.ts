@@ -41,6 +41,8 @@ export default function voronoiSortingGoalController(robot, params) {
 
   function getRandPointInPolygon(polygon){
 
+    if(!polygon) return;
+
     let point: [number, number];
 
     do {
@@ -70,7 +72,7 @@ export default function voronoiSortingGoalController(robot, params) {
     return sensors.nearbyPucks
       .filter((p) => {
         if (!p.reachedGoal()) {
-          return polygonContains(sensors[VoronoiSensor.name], [p.position.x, p.position.y]);
+          return (sensors[VoronoiSensor.name] && sensors[VoronoiSensor.name].length) ? polygonContains(sensors[VoronoiSensor.name], [p.position.x, p.position.y]) : false;
         }
         return false;
       })
@@ -110,7 +112,7 @@ export default function voronoiSortingGoalController(robot, params) {
       durationAtCurPosition = 0;
       stuck = true;
       avoidingStuckDuration = 0;
-      return goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name]));
+      return (sensors[VoronoiSensor.name]?.length) ? goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name])) : oldGoal;
     }
   }
 
@@ -136,9 +138,9 @@ export default function voronoiSortingGoalController(robot, params) {
 
     //Set new goal in cell if reached the old goal OR
     // if not holding puck and outside cell (happens when carrying final puck from cell)
-    if(sensors.reachedGoal || (!polygonContains(sensors[VoronoiSensor.name], [sensors.position.x, sensors.position.y]) && this.wasHoldingPuck)) {
+    if(sensors.reachedGoal || this.wasHoldingPuck) {
       this.wasHoldingPuck = false;
-      return goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name]));
+      return (sensors[VoronoiSensor.name]?.length) ? goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name])) : oldGoal;
     }
 
     //Keep using the oldGoal if not there yet
