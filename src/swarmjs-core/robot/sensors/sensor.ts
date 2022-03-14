@@ -82,6 +82,7 @@ export abstract class GlobalSensor<T, S> implements Sensor<Map<T,S>> {
       if(tick <= this._lastSampledTick) throw new Error(`Trying to sample sensor ${this.name} with tick ${tick} but last sampled tick is ${this._lastSampledTick}`);
     }
 
+    this._lastSampledTick = tick;
     this.value = this.getValues()
   }
 
