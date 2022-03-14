@@ -6,7 +6,6 @@ import { SensorSamplingType } from "../sensorManager";
 import { GlobalVoronoiSensor } from "./GlobalVoronoiSensor";
 
 
-// const name = "voronoiJohnTest";
 export class VoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
 
   static sensorName = "voronoiJohnTest";
@@ -32,6 +31,10 @@ export class VoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
     const voronoi = this.globalSensor.read().get(this.robot)
 
     this.value = voronoi?.cellPolygon(this.robot.id)
+    
+    //Use this for all agents to share the same cell
+    //Requires change in GlobalVornoiSensor.ts as well
+    // this.value = voronoi?.cellPolygon(0)
   }
 }
 
