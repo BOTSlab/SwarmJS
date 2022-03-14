@@ -140,7 +140,7 @@ export default class Scene {
     // Initialize Voronoi Diagram
     // Use the same voronoi diagram calculated for the robots voronoi sensor
     this.voronoiSensor = GlobalVoronoiSensor.getInstance(this);
-    this.voronoiSensor.sample(0);
+    this.voronoiSensor.sample(0, true);
 
     this.voronoi = this.voronoiSensor.read().values().next().value;
 

@@ -24,7 +24,7 @@ export default function simpleVoronoiSortingActuatorController(robot, params) {
       }
     } else {
       //If not holding puck, pickup closest puck if not in goal and in cell
-      if(closestPuck && !closestPuck.reachedGoal() && polygonContains(voronoiCell, [closestPuck.position.x, closestPuck.position.y])) {
+      if(closestPuck && !closestPuck.reachedGoal() && voronoiCell?.length && polygonContains(voronoiCell, [closestPuck.position.x, closestPuck.position.y])) {
         actuators.grabber.activate(closestPuck);
       }
     }
