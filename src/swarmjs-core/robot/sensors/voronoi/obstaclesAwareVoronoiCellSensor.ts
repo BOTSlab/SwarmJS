@@ -4,7 +4,6 @@
 // neighbors measurements; this sensor should be re-implemented to regenerate its own
 // Voronoi diagram using the sensed positions of the neighbors.
 
-// import {splitPolygon} from 'split-polygon';
 
 import * as splitPolygon from 'split-polygon'
 
@@ -16,12 +15,10 @@ import {
   pointIsInsidePolygon,
   closePolygon
 } from '../../../utils/geometry';
-import { dependencies } from 'webpack';
 import Robot from '../../robot';
 import Scene from '../../../scene';
-import VoronoiSensor, { VoronoiCellSensor } from './VoronoiSensor';
-import { Delaunay, Voronoi } from 'd3-delaunay';
-import { GlobalVoronoiSensor } from './GlobalVoronoiSensor';
+import VoronoiSensor from './VoronoiSensor';
+import { Delaunay } from 'd3-delaunay';
 
 const name = 'obstaclesAwareVoronoiCell';
 
