@@ -25,7 +25,7 @@ import PuckGoalAreaSensor from './state/puckGoalAreaSensor';
 import * as toposort from 'toposort'
 import Robot from '../robot';
 import Scene from '../../scene'
-import VoronoiSensor from './voronoi/VoronoiSensor';
+import VoronoiSensor from './voronoi/VoronoiCellSensor';
 import { Sensor } from './sensor';
 
 export const enum SensorSamplingType {

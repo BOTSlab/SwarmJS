@@ -7,7 +7,7 @@ import {
   shiftPointOfLineSegInDirOfPerpendicularBisector,
   closestPointInPolygonToPoint
 } from '../../../utils/geometry';
-import VoronoiSensor from '../../sensors/voronoi/VoronoiSensor';
+import VoronoiSensor from '../../sensors/voronoi/VoronoiCellSensor';
 
 import { polygonContains } from 'd3-polygon';
 
@@ -78,8 +78,6 @@ export default function voronoiSortingGoalController(robot, params) {
       })
       //Grab the closest one
       .sort((a, b) => getDistance(sensors.position, a.position) - getDistance(sensors.position, b.position))[0]
-
-
   }
 
   function checkIfStuck(oldGoal, sensors): {x:number, y:number} {

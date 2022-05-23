@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-import VoronoiSensor from "../../sensors/voronoi/VoronoiSensor";
+import VoronoiSensor from "../../sensors/voronoi/VoronoiCellSensor";
 import { polygonContains } from 'd3-polygon';
 import Puck from "../../../puck";
 

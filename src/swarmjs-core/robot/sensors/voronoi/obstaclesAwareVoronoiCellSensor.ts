@@ -17,7 +17,7 @@ import {
 } from '../../../utils/geometry';
 import Robot from '../../robot';
 import Scene from '../../../scene';
-import VoronoiSensor from './VoronoiSensor';
+import VoronoiSensor from './VoronoiCellSensor';
 import { Delaunay } from 'd3-delaunay';
 
 const name = 'obstaclesAwareVoronoiCell';
