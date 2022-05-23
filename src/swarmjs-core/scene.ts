@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import * as d3 from 'd3';
 import { Engine, World } from 'matter-js';
-import { Delaunay } from 'd3-delaunay';
+import { Voronoi } from 'd3-delaunay';
 
 import Robot from './robot/robot';
 import Puck from './puck';
@@ -29,7 +29,7 @@ export default class Scene {
   mapArray: any[];
   puckMapScale: number;
   pucks: Puck[];
-  voronoi: any;
+  voronoi: Voronoi<Robot>;
   timeDelta: number;
   paused: boolean;
   togglePause: () => void;
@@ -196,8 +196,11 @@ export default class Scene {
     Engine.clear(this.engine);
   }
 
+  // TODO: Enable rendering of voronoi diagram in all cases
+  // Only works for unweighted which returns a d3-delaunay voronoi object
   get voronoiMesh() {
-    return this.useVoronoi ? this.voronoi.render() : '';
+    // return this.useVoronoi ? this.voronoi.render() : '';
+    return ''
   }
 
   getCurRobotsPos() {
