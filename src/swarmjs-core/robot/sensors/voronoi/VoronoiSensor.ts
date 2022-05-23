@@ -1,16 +1,16 @@
 import { Delaunay, Voronoi } from "d3-delaunay";
 import Scene from "../../../scene";
 import Robot from "../../robot";
-import { AbstractSensor } from "../sensor";
+import { AbstractSensor, GlobalSensor } from "../sensor";
 import { SensorSamplingType } from "../sensorManager";
 import { GlobalVoronoiSensor } from "./GlobalVoronoiSensor";
 
 
 export class VoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
 
-  static sensorName = "voronoiJohnTest";
+  static sensorName = "individualVoronoiSensor";
 
-  private globalSensor: GlobalVoronoiSensor;
+  private globalSensor: GlobalSensor<Robot, Voronoi<Robot>>;
 
 
   constructor(robot: Robot, scene: Scene) {
@@ -29,12 +29,15 @@ export class VoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
 
     //Read the global sensor and filter this sensor's value
     const voronoi = this.globalSensor.read().get(this.robot)
+    if (!voronoi) return
 
-    this.value = voronoi?.cellPolygon(this.robot.id)
+    // this.value = voronoi?.cellPolygon(this.robot.id)
+    this.value = voronoi[this.robot.id]
     
     //Use this for all agents to share the same cell
     //Requires change in GlobalVornoiSensor.ts as well
     // this.value = voronoi?.cellPolygon(0)
+
   }
 }
 
