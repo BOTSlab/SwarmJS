@@ -37,6 +37,8 @@ export default class Scene {
   unpause: () => void;
   setSpeed: (scale: any) => void;
   voronoiSensor: GlobalVoronoiSensor;
+
+  
   constructor(
     envConfig,
     robotsConfig,
@@ -194,6 +196,17 @@ export default class Scene {
     this.timeInstance = this.engine.timing.timestamp;
 
     Engine.clear(this.engine);
+  }
+
+  removePuck(puck: Puck) {
+
+    this.pucks = this.pucks.filter( (ele) => {
+      return ele != puck
+    }) //remove from tracking outside the physics simulation
+
+    this.numOfPucks = this.numOfPucks - 1
+
+    World.remove(this.world, puck.body) //Remove from physics simulation world
   }
 
   // TODO: Enable rendering of voronoi diagram in all cases

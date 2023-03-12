@@ -95,7 +95,11 @@ export default class Puck {
   }
 
   reachedGoal() {
-    return this.reachedDist(this.groupGoal, this.goalReachedDist);
+    const reached = this.reachedDist(this.groupGoal, this.goalReachedDist);
+    if (reached) {
+      this.scene.removePuck(this)
+    }
+    return reached
   }
 
   deepInGoal() {
