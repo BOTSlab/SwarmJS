@@ -141,6 +141,11 @@ export default function voronoiSortingGoalController(robot, params) {
       return (sensors[VoronoiSensor.name]?.length) ? goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name])) : oldGoal;
     }
 
+    //If old goal not in cell, set new goal in cell
+    if (sensors[VoronoiSensor.name]?.length) {
+      polygonContains(sensors[VoronoiSensor.name], [oldGoal.x, oldGoal.y]) ? oldGoal : goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name]));
+    }
+
     //Keep using the oldGoal if not there yet
     return oldGoal; 
   };
