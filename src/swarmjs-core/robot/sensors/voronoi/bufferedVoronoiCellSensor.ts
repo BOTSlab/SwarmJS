@@ -42,11 +42,13 @@ class BufferedVoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
       return;
     }
 
-    this.value = calculateBVCfromVC(
-      cell,
-      pos,
-      this.robot.radius
-    );
+    this.value = this.robot.sensors.obstaclesAwareVoronoiCell;
+
+    // this.value = calculateBVCfromVC(
+    //   cell,
+    //   pos,
+    //   this.robot.radius
+    // );
   }
 }
 

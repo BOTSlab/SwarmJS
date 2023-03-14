@@ -78,9 +78,10 @@ class ObstaclesAwareVoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
 
     const pos = this.robot.sensors?.position;
     const closestPoint = this.robot?.sensors?.closestObstaclePoint;
-    this.value = pos && closestPoint
-      ? trimVCwithStaticObstacles(pos, originalVC, closestPoint)
-      : originalVC;
+    // this.value = pos && closestPoint
+    //   ? trimVCwithStaticObstacles(pos, originalVC, closestPoint)
+    //   : originalVC;
+    this.value = originalVC
   }
 }
 
