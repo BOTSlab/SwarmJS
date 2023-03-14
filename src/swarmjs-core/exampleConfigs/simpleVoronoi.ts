@@ -34,7 +34,7 @@ type simConfig2 = {
   robots: robotConfig,
   pucks: puckConfig,
   objects: objectsConfig,
-  positionsGenerator: (numOfPos: any, radius: any, envWidth: any, envHeight: any, staticObjects: any) => () => any
+  positionsGenerator: (numOfRobots: any, numOfPucks: any, radius: any, envWidth: any, envHeight: any, staticObjects: any) => { getRobotPos: () => any; getPuckPos: () => any; }
 };
 
 
@@ -46,7 +46,7 @@ const simConfig: simConfig2 = {
     speed: 15
   },
   robots: { 
-    count: 16,
+    count: 9,
     radius: 7,
     controllers: {
       actuators: Controllers.actuators.simpleVoronoiSortingActuatorController,
@@ -66,20 +66,21 @@ const simConfig: simConfig2 = {
     groups: [
       {
         id: 0,
-        count: 10,
+        count: 50,
         radius: 10,
-        goal: { x: 400, y: 350 },
+        goal: { x: 400, y: 400 },
         goalRadius: 7 * 12,
         color: 'red'
-      },
-      {
-        id: 1,
-        count: 10,
-        radius: 10,
-        goal: { x: 650, y: 375 },
-        goalRadius: 7 * 12,
-        color: 'blue'
       }
+      // ,
+      // {
+      //   id: 1,
+      //   count: 10,
+      //   radius: 10,
+      //   goal: { x: 650, y: 375 },
+      //   goalRadius: 7 * 12,
+      //   color: 'blue'
+      // }
       // {
       //   id: 2,
       //   count: 20,
@@ -100,30 +101,94 @@ const simConfig: simConfig2 = {
     useGlobalPuckMaps: false
   },
   objects: [],
+  // positionsGenerator: PositionsGenerators.uniformSquareRobotsAndPucksSep
   positionsGenerator: PositionsGenerators.randomCollisionFree
 };
 
 const benchmarkConfig = {
-  simConfigs: [
-    {
-      name: '5 Robots',
-      simConfig: {
-        env: {
-          speed: 50
-        },
-        robots: {
-          count: 5
-        }
-      }
+  simConfigs: [{
+    env: {
+      width: 800,
+      height: 800,
+      speed: 15
     },
-    {
-      name: '20 Robots',
-      simConfig: {
-        env: {
-          speed: 50
+    robots: { 
+      count: 9,
+      radius: 7,
+      controllers: {
+        actuators: Controllers.actuators.simpleVoronoiSortingActuatorController,
+        goal: Controllers.goal.voronoiSortingGoalController,
+        waypoint: Controllers.waypoint.dummyWaypointController,
+        // velocity: Controllers.velocity.omniDirVelocityController
+        velocity: {
+          controller: Controllers.velocity.diffVelocityController,
+          params: { angularVelocityScale: 0.01 }
         }
-      }
-    }
+      },
+      sensors: Object.values(AvailableSensors),
+      actuators: Object.values(AvailableActuators),
+      useVoronoiDiagram: true
+    },
+    pucks: {
+      groups: [
+        {
+          id: 0,
+          count: 49,
+          radius: 10,
+          goal: { x: 400, y: 350 },
+          goalRadius: 7 * 12,
+          color: 'red'
+        }
+        // ,
+        // {
+        //   id: 1,
+        //   count: 10,
+        //   radius: 10,
+        //   goal: { x: 650, y: 375 },
+        //   goalRadius: 7 * 12,
+        //   color: 'blue'
+        // }
+        // {
+        //   id: 2,
+        //   count: 20,
+        //   radius: 10,
+        //   goal: { x: 200, y: 150 },
+        //   goalRadius: 7 * 12,
+        //   color: 'green'
+        // },
+        // {
+        //   id: 3,
+        //   count: 20,
+        //   radius: 10,
+        //   goal: { x: 600, y: 600 },
+        //   goalRadius: 7 * 12,
+        //   color: 'orange'
+        // }
+      ],
+      useGlobalPuckMaps: false
+    },
+    objects: [],
+    positionsGenerator: PositionsGenerators.uniformSquareRobotsAndPucksSep
+  }
+    // {
+    //   name: '5 Robots',
+    //   simConfig: {
+    //     env: {
+    //       speed: 50
+    //     },
+    //     robots: {
+    //       count: 5
+    //     }
+    //   }
+    // },
+    // {
+    //   name: '20 Robots',
+    //   simConfig: {
+    //     env: {
+    //       speed: 50
+    //     }
+    //   }
+    // }
   ],
   trackers: [
     PerformanceTrakers.RobotToGoalDistanceTracker,
