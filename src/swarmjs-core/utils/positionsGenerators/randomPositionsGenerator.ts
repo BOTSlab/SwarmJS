@@ -13,12 +13,15 @@ const getPos = () => {
 };
 
 export default function getRandCollFreePosGenerator(
-  numOfPos, radius, envWidth, envHeight, staticObjects
+  numOfRobots, numOfPucks, radius, envWidth, envHeight, staticObjects
 ) {
   const resolution = (radius * 2.1);
   const xCount = envWidth / resolution;
   const yCount = envHeight / resolution;
-  const positionsCount = parseInt(numOfPos, 10);
+
+  const puckPositionsCount = parseInt(numOfPucks, 10);
+  const robotPositionsCount = parseInt(numOfRobots, 10);
+  const positionsCount = puckPositionsCount + robotPositionsCount
 
   if (xCount * yCount < positionsCount * 4) {
     throw new Error('Invalid inputs, number and size of robots and pucks are too high for this environment size!');
@@ -51,5 +54,5 @@ export default function getRandCollFreePosGenerator(
     throw new Error('Invalid inputs, number and size of robots are too high for this environment!');
   }
 
-  return getPos;
+  return { getRobotPos: getPos, getPuckPos: getPos };
 }
