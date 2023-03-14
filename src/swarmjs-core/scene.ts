@@ -24,6 +24,8 @@ export default class Scene {
   envBoundaryObjects: any;
   staticObjects: any;
   getPos: any;
+  getPuckPos: any;
+  getRobotPos: any;
   robots: Robot[];
   puckMaps: any[];
   mapArray: any[];
@@ -74,13 +76,17 @@ export default class Scene {
     );
 
     // Starting and Goal Positions
-    this.getPos = positionsGenerator(
-      this.numOfRobots + this.numOfPucks,
+    const posGens = positionsGenerator(
+      this.numOfRobots,
+      this.numOfPucks,
       this.robotRadius,
       this.width,
       this.height,
       this.staticObjects
     );
+
+    this.getPuckPos = posGens.getPuckPos;
+    this.getRobotPos = posGens.getRobotPos;
 
     // Initialize Robots
     this.robots = this.initializeRobotsRange(
@@ -191,6 +197,9 @@ export default class Scene {
     this.robots.forEach((r) => r.timeStep());
     this.pucks.forEach((p) => p.timeStep());
 
+    this.pucks = this.pucks.filter((p) => !p.reachedGoal())
+    this.numOfPucks = this.pucks.length
+
     this.timeInstance = this.engine.timing.timestamp;
 
     Engine.clear(this.engine);
@@ -215,16 +224,18 @@ export default class Scene {
     numOfRobots: number, radius: number, controllers, sensors, actuators, envWidth, envHeight, algorithm
   ) {
     return d3.range(numOfRobots)
-      .map((i) => new Robot(i,
-        this.getPos(),
-        this.getPos(),
+      .map((i) => {
+        const pos = this.getRobotPos();
+        return new Robot(i,
+        pos,
+        pos,
         controllers,
         sensors,
         actuators,
         radius,
         envWidth,
         envHeight,
-        this));
+        this)});
   }
 
   initializePucksRange(pucksGroups, envWidth, envHeight, maps) {
@@ -236,7 +247,7 @@ export default class Scene {
         ...d3.range(puckGroup.count)
           .map((i) => new Puck(
             i + id,
-            this.getPos(),
+            this.getPuckPos(),
             puckGroup.radius,
             puckGroup.goal,
             puckGroup.goalRadius,
