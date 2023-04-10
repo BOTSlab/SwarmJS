@@ -38,6 +38,8 @@ export default class Scene {
   setSpeed: (scale: any) => void;
   voronoiSensor: GlobalVoronoiSensor;
 
+  tickData: Array<{pucksRemaining: number, tickCount: number}> = []
+
   
   constructor(
     envConfig,
@@ -53,6 +55,8 @@ export default class Scene {
     this.useVoronoi = robotsConfig.useVoronoiDiagram;
     this.pucksGroups = pucksConfigs.groups;
     this.numOfPucks = this.pucksGroups.reduce((total, puckGroup) => total + puckGroup.count, 0);
+
+    this.tickData.push({pucksRemaining: this.numOfPucks, tickCount: 0})
 
     this.width = parseInt(envConfig.width, 10);
     this.height = parseInt(envConfig.height, 10);
@@ -206,7 +210,36 @@ export default class Scene {
 
     this.numOfPucks = this.numOfPucks - 1
 
+    this.tickData.push({ pucksRemaining: this.numOfPucks, tickCount: this.timeInstance })
+
+    if(this.numOfPucks === 0) {
+      this.allPucksCleared()
+    }
+
     World.remove(this.world, puck.body) //Remove from physics simulation world
+  }
+
+  allPucksCleared() {
+    this.downloadDataCSV();
+      setTimeout(() => {
+        window.location.reload();
+      }, 10000); // Wait for 1 second before reloading to ensure the file is downloaded.
+  }
+
+  downloadDataCSV() {
+      const csvContent = "data:text/csv;charset=utf-8," + [
+        "pucksRemaining,ticksCount",
+        ...this.tickData.map(d => `${d.pucksRemaining},${d.tickCount}`)
+      ].join("\n");
+    
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "ticks-data.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    
   }
 
   // TODO: Enable rendering of voronoi diagram in all cases
