@@ -13,9 +13,9 @@ import { GlobalVoronoiSensor } from './robot/sensors/voronoi/GlobalVoronoiSensor
 export default class Scene {
   numOfRobots: number;
   robotRadius: number;
-  useVoronoi: any;
+  useVoronoi: boolean;
   pucksGroups: any;
-  numOfPucks: any;
+  numOfPucks: number;
   width: number;
   height: number;
   engine: Engine;
@@ -39,8 +39,16 @@ export default class Scene {
   unpause: () => void;
   setSpeed: (scale: any) => void;
   voronoiSensor: GlobalVoronoiSensor;
+  tickCount: number;
 
-  tickData: Array<{pucksRemaining: number, tickCount: number}> = []
+  tickData: Array<{pucksRemaining: number, tickCount: number, tickCount2: number}> = []
+
+  //CSV download info
+  hasTriggeredDownload = false
+  initialPuckCount: number
+  intialRobotCount: number
+  addditionalCsvName: string
+
 
   
   constructor(
@@ -58,7 +66,12 @@ export default class Scene {
     this.pucksGroups = pucksConfigs.groups;
     this.numOfPucks = this.pucksGroups.reduce((total, puckGroup) => total + puckGroup.count, 0);
 
-    this.tickData.push({pucksRemaining: this.numOfPucks, tickCount: 0})
+    //for csv
+    this.tickData.push({pucksRemaining: this.numOfPucks, tickCount: 0, tickCount2: 0})
+    this.initialPuckCount = this.numOfPucks;
+    this.intialRobotCount = this.numOfRobots;
+    this.addditionalCsvName = "random-dynamic-area-800-goal-400-400"
+    this.tickCount = 0;
 
     this.width = parseInt(envConfig.width, 10);
     this.height = parseInt(envConfig.height, 10);
@@ -208,18 +221,24 @@ export default class Scene {
 
     this.timeInstance = this.engine.timing.timestamp;
 
+    this.tickCount++;
+
     Engine.clear(this.engine);
   }
 
   removePuck(puck: Puck) {
 
+    const prevNumOfPucks = this.numOfPucks
+
     this.pucks = this.pucks.filter( (ele) => {
       return ele != puck
     }) //remove from tracking outside the physics simulation
 
-    this.numOfPucks = this.numOfPucks - 1
+    this.numOfPucks = this.pucks.length
 
-    this.tickData.push({ pucksRemaining: this.numOfPucks, tickCount: this.timeInstance })
+    if(prevNumOfPucks != this.numOfPucks){
+      this.tickData.push({ pucksRemaining: this.numOfPucks, tickCount: this.timeInstance, tickCount2: this.tickCount})
+    }
 
     if(this.numOfPucks === 0) {
       this.allPucksCleared()
@@ -229,22 +248,29 @@ export default class Scene {
   }
 
   allPucksCleared() {
-    this.downloadDataCSV();
-      setTimeout(() => {
-        window.location.reload();
-      }, 10000); // Wait for 1 second before reloading to ensure the file is downloaded.
+    if(!this.hasTriggeredDownload) {
+      this.hasTriggeredDownload = true;
+      this.downloadDataCSV();
+        setTimeout(() => {
+          window.location.reload();
+        }, 3000); // Wait for 3 seconds before reloading to ensure the file is downloaded.
+    }
   }
 
   downloadDataCSV() {
       const csvContent = "data:text/csv;charset=utf-8," + [
-        "pucksRemaining,ticksCount",
-        ...this.tickData.map(d => `${d.pucksRemaining},${d.tickCount}`)
+        "pucksRemaining,time,ticks",
+        ...this.tickData.map(d => `${d.pucksRemaining},${d.tickCount},${d.tickCount2}`)
       ].join("\n");
+
+      const timestamp = new Date().getTime();
+
+      const filename = `${this.intialRobotCount}r-${this.initialPuckCount}p-${this.addditionalCsvName}-minStuck50-${timestamp}.csv`
     
       const encodedUri = encodeURI(csvContent);
       const link = document.createElement("a");
       link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "ticks-data.csv");
+      link.setAttribute("download", filename);
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

@@ -1,3 +1,4 @@
+import Puck from '../../../puck';
 import { angleBetweenThreePointsDeg, pointIsOnRightSideOfVector } from '../../../utils/geometry';
 
 export default function diffVelocityController(robot, { angularVelocityScale }) {
@@ -11,6 +12,8 @@ export default function diffVelocityController(robot, { angularVelocityScale }) 
     if (robot.reached(point)) {
       return { linearVel: { x: 0, y: 0 }, angularVel };
     }
+
+    
 
     const angle = angleBetweenThreePointsDeg(sensors.heading, sensors.position, point);
     const directionOnRight = pointIsOnRightSideOfVector(
@@ -31,7 +34,15 @@ export default function diffVelocityController(robot, { angularVelocityScale }) 
       angularVel = angularVelocityScale * angle;
     }
 
-    const linearVel = { x: linearVelX / 50, y: linearVelY / 50 };
+    let linearVel = { x: linearVelX / 50, y: linearVelY / 50 };
+
+    // if(sensors.nearestAgent && sensors.nearestAgent.distance && (sensors.nearestAgent.distance < 4 * robot.radius)){
+    //   linearVel = {x: 0, y: 0};
+    // }
+
+    if(sensors.collisionSensor) {
+      linearVel = {x: 0, y: 0};
+    }
 
     return { linearVel, angularVel };
   };

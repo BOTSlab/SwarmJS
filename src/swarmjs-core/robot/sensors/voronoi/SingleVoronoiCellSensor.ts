@@ -79,6 +79,7 @@ export class SingleVoronoiCellSensor extends GlobalSensor<Robot, Voronoi<Robot>>
     .y((d) => d.y)
     .weight((d) => d.weight)
     .clip([[0,0], [0, 800], [800, 800], [800, 0]])
+    // .clip([[0,0], [0, 1600], [1600, 1600], [1600, 0]])
 
 
 
@@ -87,6 +88,7 @@ export class SingleVoronoiCellSensor extends GlobalSensor<Robot, Voronoi<Robot>>
     for (let i = 0; i < this.centroids.length; i++) {
       // const polygon = newVoronoi.find(d => d.site.x === element.x && d.site.y === element.y)
       testing[i] = [[0,0], [0, 800], [800, 800], [800, 0]]
+      // testing[i] = [[0,0], [0, 1600], [1600, 1600], [1600, 0]]
     }
 
     this.voronoi = testing as any

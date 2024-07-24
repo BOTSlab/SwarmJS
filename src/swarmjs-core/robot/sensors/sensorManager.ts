@@ -21,6 +21,8 @@ import PucksNearGrabberSensor from './clustering/pucksNearGrabberSensor';
 import ClosestPuckToGrabberSensor from './clustering/closestPuckToGrabberSensor';
 import WallSensor from './env/wallSensor';
 import PuckGoalAreaSensor from './state/puckGoalAreaSensor';
+import NearestAgentSensor from './nearby/nearestAgentSensor';
+import CollisionSensor from './nearby/collisionSensor';
 
 import * as toposort from 'toposort'
 import Robot from '../robot';
@@ -53,7 +55,9 @@ const availableSensorDefitions = [
   ReachedWaypointSensor,
   PucksNearGrabberSensor,
   ClosestPuckToGrabberSensor,
-  VoronoiSensor
+  VoronoiSensor,
+  NearestAgentSensor,
+  CollisionSensor
 ];
 
 

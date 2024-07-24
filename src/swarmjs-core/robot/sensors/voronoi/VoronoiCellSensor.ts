@@ -36,7 +36,7 @@ export class VoronoiCellSensor extends AbstractSensor<Delaunay.Polygon> {
     
     //Use this for all agents to share the same cell
     //Requires change in GlobalVornoiSensor.ts as well
-    // this.value = voronoi?.cellPolygon(0)
+    // this.value = voronoi[0]
 
   }
 }

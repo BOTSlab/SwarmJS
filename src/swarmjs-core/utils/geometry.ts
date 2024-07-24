@@ -9,7 +9,7 @@ export function radToDeg(radians) {
 }
 
 export function normalizeAngle(angle) {
-  return angle % (2 * Math.PI);
+  return ((angle % (2 * Math.PI)) + (2 * Math.PI)) % (2 * Math.PI);
 }
 
 /*

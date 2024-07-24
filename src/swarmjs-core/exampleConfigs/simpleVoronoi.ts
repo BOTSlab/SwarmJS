@@ -46,7 +46,7 @@ const simConfig: simConfig2 = {
     speed: 15
   },
   robots: { 
-    count: 9,
+    count: 16,
     radius: 7,
     controllers: {
       actuators: Controllers.actuators.simpleVoronoiSortingActuatorController,
@@ -66,10 +66,10 @@ const simConfig: simConfig2 = {
     groups: [
       {
         id: 0,
-        count: 50,
+        count: 25,
         radius: 10,
         goal: { x: 400, y: 400 },
-        goalRadius: 7 * 12,
+        goalRadius: 7 * 2,
         color: 'red'
       }
       // ,
@@ -113,7 +113,7 @@ const benchmarkConfig = {
       speed: 15
     },
     robots: { 
-      count: 9,
+      count: 20,
       radius: 7,
       controllers: {
         actuators: Controllers.actuators.simpleVoronoiSortingActuatorController,
@@ -133,10 +133,10 @@ const benchmarkConfig = {
       groups: [
         {
           id: 0,
-          count: 49,
+          count: 9,
           radius: 10,
           goal: { x: 400, y: 350 },
-          goalRadius: 7 * 12,
+          goalRadius: 7 * 2,
           color: 'red'
         }
         // ,

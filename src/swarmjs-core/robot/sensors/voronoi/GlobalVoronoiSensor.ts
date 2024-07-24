@@ -12,6 +12,8 @@ type centroid = {
   id: number
 }
 
-// export {UnweightedGlobalVoronoiSensor as GlobalVoronoiSensor} from './UnweightedGlobalVoronoiSensor';
-export { WeightedGlobalVoronoiSensor as GlobalVoronoiSensor} from './WeightedGlobalVoronoiSensor';
-// export { SingleVoronoiCellSensor as GlobalVoronoiSensor} from './SingleVoronoiCellSensor';
+export {UnweightedGlobalVoronoiSensor as GlobalVoronoiSensor} from './UnweightedGlobalVoronoiSensor';
+
+// export {UnweightedGlobalVoronoiSensor as GlobalVoronoiSensor} from './UnweightedGlobalVoronoiSensor2';
+// export { WeightedGlobalVoronoiSensor as GlobalVoronoiSensor} from './WeightedGlobalVoronoiSensor';
+// export { SingleVoronoiCellSensor as GlobalVoronoiSensor} from './SingleVoronoiCellSensor'; //this requires change in VoronoiCellSensor.ts as well

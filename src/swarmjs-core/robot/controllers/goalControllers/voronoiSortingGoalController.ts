@@ -31,9 +31,9 @@ export default function voronoiSortingGoalController(robot, params) {
   let stuck = false;
   let avoidingStuckDuration = 0;
 
-  const MIN_STUCK_MANEUVER_DURATION = 30;
+  const MIN_STUCK_MANEUVER_DURATION = 50;
   const SAME_POSITION_DISTANCE_THRESHOLD = radius / 50;
-  const STUCK_DURATION_THRESHOLD = 30;
+  const STUCK_DURATION_THRESHOLD = 50;
 
   function goalFromPoint(point: Delaunay.Point): {x: number, y:number} {
     return {x: point[0], y: point[1]};
@@ -81,14 +81,6 @@ export default function voronoiSortingGoalController(robot, params) {
   }
 
   function checkIfStuck(oldGoal, sensors): {x:number, y:number} {
-     // If robot was stuck and is still recovering, do not change robot goal
-    if (stuck && avoidingStuckDuration <= MIN_STUCK_MANEUVER_DURATION) {
-      avoidingStuckDuration += 1;
-      return oldGoal;
-    }
-    // Else, consider maneuver over, reset counters
-    stuck = false;
-    avoidingStuckDuration = 0;
 
     // Calc distance to last recorded position
     const distToLastPos = lastPosition
@@ -112,6 +104,25 @@ export default function voronoiSortingGoalController(robot, params) {
       avoidingStuckDuration = 0;
       return (sensors[VoronoiSensor.name]?.length) ? goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name])) : oldGoal;
     }
+
+
+     // If robot was stuck and is still recovering, do not change robot goal unless its no longer in cell
+    if (stuck && avoidingStuckDuration <= MIN_STUCK_MANEUVER_DURATION && !sensors.reachedGoal) {
+      avoidingStuckDuration += 1;
+
+      //If old goal not in cell, set new goal in cell
+      if (sensors[VoronoiSensor.name]?.length) {
+         return polygonContains(sensors[VoronoiSensor.name], [oldGoal.x, oldGoal.y]) ? oldGoal : goalFromPoint(getRandPointInPolygon(sensors[VoronoiSensor.name]));
+      }
+      return oldGoal;
+    } else {
+      // Else, consider maneuver over, reset counters
+      stuck = false;
+      avoidingStuckDuration = 0;
+    }
+
+
+    
   }
 
 

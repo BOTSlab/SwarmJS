@@ -19,10 +19,10 @@ type centroid = {
 type hasWeight = { weight: number }
 type hasSite = { site: { x: number, y: number } }
 
-export class WeightedGlobalVoronoiSensor extends GlobalSensor<Robot, Voronoi<Robot>> {
+export class UnweightedGlobalVoronoiSensor extends GlobalSensor<Robot, Voronoi<Robot>> {
 
-  private static instance: WeightedGlobalVoronoiSensor;
-  static readonly SENSOR_NAME = "weightedGlobalVoronoiSensor";
+  private static instance: UnweightedGlobalVoronoiSensor;
+  static readonly SENSOR_NAME = "unweightedGlobalVoronoiSensor";
 
   private voronoi: Voronoi<Robot>
 
@@ -31,7 +31,7 @@ export class WeightedGlobalVoronoiSensor extends GlobalSensor<Robot, Voronoi<Rob
   private oldWeights: Array<number>
 
   private constructor(scene) {
-    super(scene, WeightedGlobalVoronoiSensor.SENSOR_NAME, SensorSamplingType.onUpdate);    
+    super(scene, UnweightedGlobalVoronoiSensor.SENSOR_NAME, SensorSamplingType.onUpdate);    
   }
 
   // Get instance of singleton
@@ -118,32 +118,10 @@ export class WeightedGlobalVoronoiSensor extends GlobalSensor<Robot, Voronoi<Rob
 }
 
 function getWeights(voronoi: Voronoi<Robot>, scene: Scene): number[] {
-
-  const totalPucks: number = scene?.pucks?.length || 0
-  let heldPucks = 0
-  let goalPucks = 0
-  let unheldNotInGoal = 0;
-  const cellScore = scene.robots.map((element, index) => {
-    const voronoiCell = voronoi[index]
-
-    const unheldPucksInCellNotInGoal = scene?.pucks?.filter((p) => {
-      if(p.held && index === 0) { heldPucks++}
-      if(p.reachedGoal() && index === 0) { goalPucks++}
-      if(!p.held && !p.reachedGoal() && index === 0 ) { unheldNotInGoal++}
-
-
-      return (voronoiCell && voronoiCell.length) ? (!p.held && !p.reachedGoal() && polygonContains(voronoiCell, [p.position.x, p.position.y])) : false
-    })
-
-    // const unheldPucks = totalPucks - heldPucks
-    // const notReachedGoalPucks = totalPucks - goalPucks
-
-    const score = unheldPucksInCellNotInGoal?.length || 0
-
-    return (unheldNotInGoal - score) * 6000
+  return scene.robots.map((element, index) => {
+    return 1
   })
 
-  return cellScore
 }
 function adjustWeights(oldWeights: number[], newWeights: number[]): number[] {
 
